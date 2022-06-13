@@ -1,26 +1,50 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="container">
+    <div v-if="$store.state.todo.isLoading">Loading...</div>
+
+    <div v-else class="container">
+      <h1 class="title">My todo</h1>
+
+      <form-todo />
+
+      <list-todo />
+    </div>
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import FormTodo from '@/components/FormTodo'
+import ListTodo from "@/components/ListTodo";
+import {mapActions} from 'vuex'
+import '@/assets/index.css'
 
 export default {
-  name: 'App',
   components: {
-    HelloWorld
+    ListTodo,
+    FormTodo
+  },
+  methods: {
+    ...mapActions({
+      fetchTodos: 'todo/fetchTodos'
+    }),
+  },
+  mounted() {
+    this.fetchTodos()
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+  .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .title {
+    text-align: center;
+    font-size: 32px;
+    font-weight: 300;
+  }
 </style>
